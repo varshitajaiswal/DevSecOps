@@ -5,7 +5,7 @@ on: [push]
 jobs:
  sast_scan:
    name: Run Bandit Scan
-   runs-on: ubuntu-latest
+   runs-on: ubuntu-latest # defining the os of system
 
    steps:
    - name: Checkout code
@@ -31,19 +31,19 @@ jobs:
 
  image_scan:
    name: Build Image and Run Image Scan
-   runs-on: ubuntu-latest
+   runs-on: ubuntu-latest  # defining the os of container
 
    steps:
    - name: Checkout code
      uses: actions/checkout@v2
 
    - name: Set up Docker
-     uses: docker-practice/actions-setup-docker@v1
+     uses: docker-practice/actions-setup-docker@v1  # installing docker
      with:
-      docker_version: '20.10.7'
+      docker_version: '20.10.7' 
 
    - name: Build Docker Image
-     run: docker build -f Dockerfile -t myapp:latest .
+     run: docker build -f Dockerfile -t myapp:latest . # imagename: myapp
 
    # - name: Docker Scout Scan
      # run: |
@@ -58,16 +58,16 @@ jobs:
      with:
        dockerhub-user: ${{ secrets.REPO_USER }}
        dockerhub-password: ${{ secrets.REPO_PWD }}
-       command: quickview,cves
-       only-severities: critical,high
-       sarif-file: scout-report.sarif
+       command: quickview,cves 
+       only-severities: critical,high  # only show the critical,high severities
+       sarif-file: scout-report.sarif  #specific format file for docker scout
 
    - name: Upload Artifact
-     uses: actions/upload-artifact@v3
-     if: always()
+     uses: actions/upload-artifact@v3 
+     if: always() # Always runs 
      with:
-       name: docker-scout-findings
-       path: scout-report.sarif
+       name: docker-scout-findings 
+       path: scout-report.sarif  
 
 
 
